@@ -18,7 +18,7 @@ executor: <<parameters.exec_environment>>
 
 steps:
   - checkout
-  - install-bats
+  - install
   - steps: <<parameters.setup-steps>>
   - run:
       name: Execute BATS tests
