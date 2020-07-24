@@ -1,0 +1,11 @@
+description: >
+  The "run" job provided by the BATS orb will automatically checkout your repository and execute BATS tests within the given path. See the GitHub README for more resources on cresting BATS tests.
+usage:
+  version: 2.1
+  orbs:
+    bats: circleci/bats@1.0
+  workflows:
+    test-my-app:
+      jobs:
+        - bats/run:
+            path: ./src/tests

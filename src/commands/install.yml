@@ -1,0 +1,8 @@
+
+description: >
+  Install the BATS-Core BASH Automation Testing System.
+steps:
+  - run:
+      name: Install BATS-Core
+      command: <<include(scripts/install-bats.sh)>>
+
