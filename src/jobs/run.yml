@@ -3,7 +3,7 @@ description: >
 
 parameters:
   path:
-    description: "REQUIRED: Path containg BATS test script(s)"
+    description: "REQUIRED: Path containing BATS test script(s)"
     type: string
   setup-steps:
     description: Add additional steps prior to executing tests. Additional BATS plugins can be loaded here, or other setup scripts.
