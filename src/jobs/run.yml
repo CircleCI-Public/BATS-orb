@@ -10,7 +10,7 @@ parameters:
     type: steps
     default: []
   exec_environment:
-    description: Set a custom executor for your BATS testing environment. By defeault the docker 'cimg/base:stable' image will be used. BATS will be installed at run time.
+    description: Set a custom executor for your BATS testing environment. By default the Docker image 'cimg/base:stable' will be used. BATS will be installed at run time.
     type: executor
     default: default
 
