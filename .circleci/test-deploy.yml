@@ -1,0 +1,38 @@
+version: 2.1
+orbs:
+  bats: circleci/bats@dev:<<pipeline.git.revision>>
+  orb-tools: circleci/orb-tools@11.5
+filters: &filters
+  tags:
+    only: /.*/
+jobs:
+  test-install:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - bats/install
+workflows:
+  test-deploy:
+    jobs:
+      # Make sure to include "filters: *filters" in every test job you want to run as part of your deployment.
+      - command-tests:
+          filters: *filters
+      - orb-tools/pack:
+          filters: *filters
+      - test-install
+      - orb-tools/publish:
+          orb-name: circleci/bats
+          vcs-type: << pipeline.project.type >>
+          pub-type: production
+          enable-pr-comment: true
+          github-token: GHI_TOKEN
+          requires:
+            - orb-tools/pack
+            - test-install
+          context: orb-publisher
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
