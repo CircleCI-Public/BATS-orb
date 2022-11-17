@@ -3,14 +3,14 @@ description: >
 
 parameters:
   path:
-    description: "REQUIRED: Path containg BATS test script(s)"
+    description: "REQUIRED: Path containing BATS test script(s)"
     type: string
   setup-steps:
     description: Add additional steps prior to executing tests. Additional BATS plugins can be loaded here, or other setup scripts.
     type: steps
     default: []
   exec_environment:
-    description: Set a custom executor for your BATS testing environment. By defeault the docker 'cimg/base:stable' image will be used. BATS will be installed at run time.
+    description: Set a custom executor for your BATS testing environment. By default the Docker image 'cimg/base:stable' will be used. BATS will be installed at run time.
     type: executor
     default: default
 
