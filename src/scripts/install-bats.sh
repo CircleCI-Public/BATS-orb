@@ -1,3 +1,4 @@
+#!/bin/bash
 checkRequirements() {
     if ! which git > /dev/null; then
         echo "git is required to install BATS"
@@ -7,9 +8,9 @@ checkRequirements() {
 }
 
 installBats() {
-    cd /tmp
+    cd /tmp || exit 1
     git clone https://github.com/bats-core/bats-core.git
-    cd /tmp/bats-core
+    cd /tmp/bats-core || exit 1
     $SUDO ./install.sh /usr/local
 }
 
