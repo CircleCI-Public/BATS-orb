@@ -1,19 +1,21 @@
 #!/bin/bash
+# Script to install the latest BATS core
+set -euo pipefail
+
 checkRequirements() {
     if ! which git > /dev/null; then
         echo "git is required to install BATS"
         exit 1
     fi
-    if [[ $EUID == 0 ]]; then export SUDO=""; else export SUDO="sudo"; fi
+    if [[ "${EUID}" == 0 ]]; then export SUDO=""; else export SUDO="sudo"; fi
 }
 
 installBats() {
     cd /tmp || exit 1
     git clone https://github.com/bats-core/bats-core.git
     cd /tmp/bats-core || exit 1
-    $SUDO ./install.sh /usr/local
+    ${SUDO} ./install.sh /usr/local
 }
-
 
 checkInstall() {
     if ! which bats > /dev/null; then
@@ -31,4 +33,6 @@ runInstallBats() {
     checkInstall
 }
 
-runInstallBats
+if ! which bats > /dev/null 2>&1; then
+    runInstallBats
+fi

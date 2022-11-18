@@ -6,21 +6,22 @@ filters: &filters
   tags:
     only: /.*/
 jobs:
-  test-install:
+  command-tests:
     docker:
       - image: cimg/base:stable
     steps:
-      - checkout
-      - bats/install
+      - bats/install # test we can install
+      - bats/install # test we don't fail if installed twice
 workflows:
   test-deploy:
     jobs:
       # Make sure to include "filters: *filters" in every test job you want to run as part of your deployment.
       - command-tests:
           filters: *filters
+      - bats/run:
+          path: ./src/tests
       - orb-tools/pack:
           filters: *filters
-      - test-install
       - orb-tools/publish:
           orb-name: circleci/bats
           vcs-type: << pipeline.project.type >>
@@ -29,7 +30,7 @@ workflows:
           github-token: GHI_TOKEN
           requires:
             - orb-tools/pack
-            - test-install
+            - command-tests
           context: orb-publisher
           filters:
             branches:

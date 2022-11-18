@@ -1,16 +1,32 @@
 description: >
-  Automatically execute BATS tests as a job.
-
+  Automatically execute BATS tests as a job
+  and uploads the results to CircleCI as test results.
+  See BATS documentation for more details which can be found via https://github.com/bats-core/bats-core
 parameters:
   path:
-    description: "REQUIRED: Path containing BATS test script(s)"
+    description: >
+      REQUIRED: Path containing BATS test script(s) separated by whitespace.
+      If a path contains spaces then this MUST be wrapped in quotes.
     type: string
+  options:
+    description: >
+      Arguments passed to BATS.
+    type: string
+    default: >
+      --timing
+      --line-reference-format colon
+      --verbose-run
   setup-steps:
-    description: Add additional steps prior to executing tests. Additional BATS plugins can be loaded here, or other setup scripts.
+    description: >
+      Add additional steps prior to executing tests.
+      Additional BATS plugins can be loaded here, or other setup scripts.
     type: steps
     default: []
   exec_environment:
-    description: Set a custom executor for your BATS testing environment. By default the Docker image 'cimg/base:stable' will be used. BATS will be installed at run time.
+    description: >
+      Set a custom executor for your BATS testing environment.
+      By default the docker image 'cimg/base:stable' will be used.
+      BATS will be installed at run time.
     type: executor
     default: default
 
@@ -22,4 +38,10 @@ steps:
   - steps: <<parameters.setup-steps>>
   - run:
       name: Execute BATS tests
-      command: bats <<parameters.path>>
+      environment:
+        BATS_OPTIONS: <<parameters.options>>
+        BATS_SRC: <<parameters.path>>
+        JUNIT_OUT: /tmp/bats
+      command: <<include(scripts/run_bats.sh)>>
+  - store_test_results:
+      path: /tmp/bats/

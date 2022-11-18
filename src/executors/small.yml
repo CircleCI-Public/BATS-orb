@@ -1,0 +1,5 @@
+description: CircleCI's cimg/base docker image. A small and efficient Ubuntu environment.
+
+docker:
+  - image: cimg/base:stable
+resource_class: small
