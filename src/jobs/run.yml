@@ -22,4 +22,6 @@ steps:
   - steps: <<parameters.setup-steps>>
   - run:
       name: Execute BATS tests
-      command: bats <<parameters.path>>
+      environment:
+        ORB_VAL_PATH: <<parameters.path>>
+      command: <<include(scripts/run-bats.sh)>>
