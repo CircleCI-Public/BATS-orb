@@ -1,4 +1,4 @@
-description: CircleCI's cimg/base docker image. A small and efficient Ubuntu 18.04 environment.
+description: CircleCI's cimg/base docker image. An optimized Ubuntu 20.04 environment for CI.
 
 docker:
   - image: cimg/base:stable
