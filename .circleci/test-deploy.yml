@@ -27,6 +27,7 @@ workflows:
           name: test-bats-junit
           path: src/tests
           formatter: junit
+          timing: true
           filters: *filters
       - orb-tools/publish:
           orb-name: circleci/bats

@@ -49,6 +49,7 @@ steps:
         ORB_VAL_FORMATTER: <<parameters.formatter>>
         ORB_VAL_OUTPUT: <<parameters.output>>
         ORB_VAL_ARGS: <<parameters.args>>
+        ORB_VAL_TIMING: <<parameters.timing>>
       command: <<include(scripts/run-bats.sh)>>
   - when:
       condition:
