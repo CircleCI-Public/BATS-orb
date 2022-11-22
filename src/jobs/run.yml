@@ -51,7 +51,8 @@ steps:
         ORB_VAL_ARGS: <<parameters.args>>
       command: <<include(scripts/run-bats.sh)>>
   - when:
-      equal: ["junit", <<parameters.formatter>>]
+      condition:
+        equal: ["junit", <<parameters.formatter>>]
       steps:
         - store_test_results:
             path: <<parameters.output>>
