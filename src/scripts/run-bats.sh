@@ -5,7 +5,7 @@
 # Attempt to create the output directory
 mkdir -p "$(dirname "$ORB_VAL_OUTPUT")" || { echo "Failed to create output directory"; exit 1; }
 
-if [ "$ORB_VAL_TIMING" = "true" ]; then
+if [ "$ORB_VAL_TIMING" = "1" ]; then
   set -- "$@" --timing
 fi
 
