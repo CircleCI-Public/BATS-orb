@@ -46,7 +46,12 @@ steps:
       name: Execute BATS tests
       environment:
         ORB_VAL_PATH: <<parameters.path>>
-        ORB_VAL_FORMATTER: tap
+        ORB_VAL_FORMATTER: <<parameters.formatter>>
         ORB_VAL_OUTPUT: <<parameters.output>>
         ORB_VAL_ARGS: <<parameters.args>>
       command: <<include(scripts/run-bats.sh)>>
+  - when:
+      equal: ["junit", <<parameters.formatter>>]
+      steps:
+        - store_test_results:
+            path: <<parameters.output>>
