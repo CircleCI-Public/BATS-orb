@@ -5,10 +5,32 @@ parameters:
   path:
     description: "REQUIRED: Path containing BATS test script(s)"
     type: string
+
+  formatter:
+    description: "Formatter to use for output. Select `junit` for CircleCI test reporting. You can also supply a custom formatter."
+    type: string
+    default: "tap"
+
+  timing:
+    description: "Add timing information to the tests. Recommended for CircleCI test reporting."
+    type: boolean
+    default: false
+
+  output:
+    description: "Write the results to a file. Ensure the filetype matches the formatter."
+    type: string
+    default: "/tmp/bats/results.xml"
+
+  args:
+    description: "Additional arguments to pass to the BATS command. e.x: `--recursive --trace`"
+    type: string
+    default: ""
+
   setup-steps:
     description: Add additional steps prior to executing tests. Additional BATS plugins can be loaded here, or other setup scripts.
     type: steps
     default: []
+
   exec_environment:
     description: Set a custom executor for your BATS testing environment. By default the Docker image 'cimg/base:stable' will be used. BATS will be installed at run time.
     type: executor
@@ -24,4 +46,7 @@ steps:
       name: Execute BATS tests
       environment:
         ORB_VAL_PATH: <<parameters.path>>
+        ORB_VAL_FORMATTER: tap
+        ORB_VAL_OUTPUT: <<parameters.output>>
+        ORB_VAL_ARGS: <<parameters.args>>
       command: <<include(scripts/run-bats.sh)>>
