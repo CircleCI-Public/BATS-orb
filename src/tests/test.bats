@@ -1,3 +1,9 @@
+setup() {
+  if ! command -v bc &> /dev/null; then
+    sudo apt install bc
+  fi
+}
+
 @test "1: Get the 1000th digit of pi" {
     # https://stackoverflow.com/a/23524782
     pi=$(echo "scale=1000; 4*a(1)" | bc -l;)
