@@ -1,11 +1,18 @@
 description: >
-  The "run" job provided by the BATS orb will automatically checkout your repository and execute BATS tests within the given path. See the GitHub README for more resources on creating BATS tests.
+  The "run" job provided by the BATS orb will automatically checkout your repository and execute BATS tests within the given path.
+  Optionally, specify the 'junit' formatter and enable timing to generate a JUnit XML file for CircleCI test reporting.
+  Junit test reports will be automatically collected.
+
+  See the GitHub README for more resources on creating BATS tests.
+
 usage:
   version: 2.1
   orbs:
-    bats: circleci/bats@1.0.1
+    bats: circleci/bats@1.1.0
   workflows:
     test-my-app:
       jobs:
         - bats/run:
             path: ./src/tests
+            formatter: junit
+            timing: true
