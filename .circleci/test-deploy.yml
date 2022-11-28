@@ -29,6 +29,12 @@ workflows:
           formatter: junit
           timing: true
           filters: *filters
+      - bats/run:
+          name: test-bats-junit-multi-path
+          path: src/tests src/tests2
+          formatter: junit
+          timing: true
+          filters: *filters
       - orb-tools/publish:
           orb-name: circleci/bats
           vcs-type: << pipeline.project.type >>
@@ -40,6 +46,7 @@ workflows:
             - test-bats-junit
             - test-bats
             - test-install
+            - test-bats-junit-multi-path
           context: orb-publisher
           filters:
             branches:
