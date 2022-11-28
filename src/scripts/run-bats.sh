@@ -3,7 +3,7 @@
 #   for the existence of BATS prior to running this script.
 
 # Attempt to create the output directory
-mkdir -p "$(dirname "$ORB_VAL_OUTPUT")" || { echo "Failed to create output directory"; exit 1; }
+mkdir -p "$ORB_VAL_OUTPUT" || { echo "Failed to create output directory"; exit 1; }
 
 if [ "$ORB_VAL_TIMING" = "1" ]; then
   set -- "$@" --timing
@@ -15,5 +15,5 @@ if [ -n "$ORB_VAL_ARGS" ]; then
 fi
 
 set -x
-bats --formatter "$ORB_VAL_FORMATTER" "$@" "$ORB_VAL_PATH" | tee "$ORB_VAL_OUTPUT"
+bats --formatter "$ORB_VAL_FORMATTER" --report-formatter "$ORB_VAL_REPORT_FORMATTER" "$@" --output "$ORB_VAL_OUTPUT" "$ORB_VAL_PATH" 
 set +x

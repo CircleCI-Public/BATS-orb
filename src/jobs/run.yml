@@ -7,9 +7,14 @@ parameters:
     type: string
 
   formatter:
-    description: "Formatter to use for output. Select `junit` for CircleCI test reporting. You can also supply a custom formatter."
+    description: "Formatter to use for output seen in the step UI. You can also supply a custom formatter."
     type: string
     default: "tap"
+
+  report_formatter:
+    description: "Formatter to use for test report output. Select `junit` for CircleCI test reporting. You can also supply a custom formatter."
+    type: string
+    default: "junit"
 
   timing:
     description: "Add timing information to the tests. Recommended for CircleCI test reporting."
@@ -17,9 +22,9 @@ parameters:
     default: false
 
   output:
-    description: "Write the results to a file. Ensure the filetype matches the formatter."
+    description: "Write the report results to a file in this given path."
     type: string
-    default: "/tmp/bats/results.xml"
+    default: "/tmp/bats"
 
   args:
     description: "Additional arguments to pass to the BATS command. e.x: `--recursive --trace`"
@@ -47,13 +52,14 @@ steps:
       environment:
         ORB_VAL_PATH: <<parameters.path>>
         ORB_VAL_FORMATTER: <<parameters.formatter>>
+        ORB_VAL_REPORT_FORMATTER: <<parameters.report_formatter>>
         ORB_VAL_OUTPUT: <<parameters.output>>
         ORB_VAL_ARGS: <<parameters.args>>
         ORB_VAL_TIMING: <<parameters.timing>>
       command: <<include(scripts/run-bats.sh)>>
   - when:
       condition:
-        equal: ["junit", <<parameters.formatter>>]
+        equal: ["junit", <<parameters.report_formatter>>]
       steps:
         - store_test_results:
             path: <<parameters.output>>
