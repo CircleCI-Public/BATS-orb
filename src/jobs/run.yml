@@ -19,7 +19,7 @@ parameters:
   timing:
     description: "Add timing information to the tests. Recommended for CircleCI test reporting."
     type: boolean
-    default: false
+    default: true
 
   output:
     description: "Write the report results to a file in this given path."
