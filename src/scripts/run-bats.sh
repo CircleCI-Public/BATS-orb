@@ -15,5 +15,6 @@ if [ -n "$ORB_VAL_ARGS" ]; then
 fi
 
 set -x
-bats --formatter "$ORB_VAL_FORMATTER" --report-formatter "$ORB_VAL_REPORT_FORMATTER" "$@" --output "$ORB_VAL_OUTPUT" "$ORB_VAL_PATH" 
+#shellcheck disable=SC2086
+bats --formatter "$ORB_VAL_FORMATTER" --report-formatter "$ORB_VAL_REPORT_FORMATTER" "$@" --output "$ORB_VAL_OUTPUT" $ORB_VAL_PATH 
 set +x

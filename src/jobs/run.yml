@@ -41,6 +41,11 @@ parameters:
     type: executor
     default: default
 
+  save_test_results:
+    description: Save test results to CircleCI. This is only necessary if you are using the `junit` formatter.
+    type: boolean
+    default: true
+
 executor: <<parameters.exec_environment>>
 
 steps:
@@ -53,13 +58,13 @@ steps:
         ORB_VAL_PATH: <<parameters.path>>
         ORB_VAL_FORMATTER: <<parameters.formatter>>
         ORB_VAL_REPORT_FORMATTER: <<parameters.report_formatter>>
+        ORB_VAL_SAVE_TEST_RESULTS: <<parameters.save_test_results>>
         ORB_VAL_OUTPUT: <<parameters.output>>
         ORB_VAL_ARGS: <<parameters.args>>
         ORB_VAL_TIMING: <<parameters.timing>>
       command: <<include(scripts/run-bats.sh)>>
   - when:
-      condition:
-        equal: ["junit", <<parameters.report_formatter>>]
+      condition: <<parameters.save_test_results>>
       steps:
         - store_test_results:
             path: <<parameters.output>>
