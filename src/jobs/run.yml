@@ -12,7 +12,9 @@ parameters:
     default: "tap"
 
   report_formatter:
-    description: "Formatter to use for test report output. Select `junit` for CircleCI test reporting. You can also supply a custom formatter."
+    description:
+      Formatter to use for test report output. By default, "junit" will be selected and parsed by CircleCI.
+      If a non-junit compatible formatter is selected, "save_test_results" should be set to false.
     type: string
     default: "junit"
 
@@ -42,7 +44,9 @@ parameters:
     default: default
 
   save_test_results:
-    description: Save test results to CircleCI. This is only necessary if you are using the `junit` formatter.
+    description:
+      Save test results to CircleCI. Note, your formatter must be 'junit' to be parsed by CircleCI.
+      If the report format has been changed, or if you do not wish for the test results to be displayed within CircleCI, then set this to 'false'
     type: boolean
     default: true
 
