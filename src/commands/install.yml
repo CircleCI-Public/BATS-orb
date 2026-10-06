@@ -1,6 +1,16 @@
 description: >
   Install the BATS-Core BASH Automation Testing System.
+parameters:
+  version:
+    description: >
+      Version of BATS-Core to install: a release tag (e.g. "v1.14.0") or a full commit SHA
+      from the bats-core repository. The default of "latest" installs the tip of the default branch.
+      Ignored if BATS is already installed in the environment.
+    type: string
+    default: "latest"
 steps:
   - run:
       name: Install BATS-Core
+      environment:
+        ORB_VAL_BATS_VERSION: <<parameters.version>>
       command: <<include(scripts/install-bats.sh)>>

@@ -15,6 +15,9 @@ installBats() {
     cd /tmp || exit 1
     git clone https://github.com/bats-core/bats-core.git
     cd /tmp/bats-core || exit 1
+    if [ -n "$ORB_VAL_BATS_VERSION" ] && [ "$ORB_VAL_BATS_VERSION" != "latest" ]; then
+        git checkout --quiet "$ORB_VAL_BATS_VERSION" || { echo "Failed to check out BATS-Core version: $ORB_VAL_BATS_VERSION"; exit 1; }
+    fi
     $SUDO ./install.sh /usr/local
     if ! command -v bats &> /dev/null
     then
@@ -27,7 +30,7 @@ installBats() {
 }
 
 setupBats() {
-    if ! command -v bats &> /dev/null 
+    if ! command -v bats &> /dev/null
     then
     # BATS is not installed
         installBats

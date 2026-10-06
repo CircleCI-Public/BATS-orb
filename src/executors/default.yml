@@ -1,4 +1,12 @@
-description: CircleCI's cimg/base docker image. An optimized Ubuntu 20.04 environment for CI.
+description: CircleCI's cimg/base docker image. An optimized Ubuntu environment for CI.
+
+parameters:
+  tag:
+    description: >
+      The cimg/base image tag, e.g. "stable", "current", or "edge". A digest can be appended
+      to pin the exact image, e.g. "stable@sha256:<digest>".
+    type: string
+    default: "stable"
 
 docker:
-  - image: cimg/base:stable
+  - image: cimg/base:<<parameters.tag>>
