@@ -1,27 +1,55 @@
 version: 2.1
 orbs:
-  bats: circleci/bats@dev:<<pipeline.git.revision>>
-  orb-tools: circleci/orb-tools@11.5
+  # The bats orb definition is intentionally not included here. It will be injected into the pipeline.
+  bats: {}
+  orb-tools: circleci/orb-tools@12.5
+
+# Use this tag to ensure test jobs always run,
+# even though the downstream publish job will only run on release tags.
 filters: &filters
   tags:
     only: /.*/
+
+# Filter for release tags.
+release-filters: &release-filters
+  branches:
+    ignore: /.*/
+  tags:
+    only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
+
 jobs:
   test-install:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/base:current
     steps:
       - checkout
       - bats/install
+
+  test-install-pinned:
+    docker:
+      - image: cimg/base:current
+    steps:
+      - checkout
+      - bats/install:
+          version: v1.14.0
+      - run:
+          name: Verify pinned BATS-Core version
+          command: bats --version | grep -F "1.14.0"
+
 workflows:
   test-deploy:
     jobs:
-      - orb-tools/pack:
-          filters: *filters
+      # Make sure to include "filters: *filters" in every test job you want to run as part of your deployment.
       - test-install:
+          filters: *filters
+      - test-install-pinned:
           filters: *filters
       - bats/run:
           name: test-bats
           path: src/tests
+          exec_environment:
+            name: bats/default
+            tag: current
           filters: *filters
       - bats/run:
           name: test-bats-junit
@@ -35,21 +63,20 @@ workflows:
           formatter: junit
           timing: true
           filters: *filters
+      # The orb must be re-packed for publishing, and saved to the workspace.
+      - orb-tools/pack:
+          filters: *release-filters
       - orb-tools/publish:
-          orb-name: circleci/bats
-          vcs-type: << pipeline.project.type >>
-          pub-type: production
-          enable-pr-comment: true
-          github-token: GHI_TOKEN
+          orb_name: circleci/bats
+          vcs_type: << pipeline.project.type >>
+          pub_type: production
+          # Ensure this job requires all test jobs and the pack job.
           requires:
             - orb-tools/pack
-            - test-bats-junit
-            - test-bats
             - test-install
+            - test-install-pinned
+            - test-bats
+            - test-bats-junit
             - test-bats-junit-multi-path
           context: orb-publisher
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
+          filters: *release-filters

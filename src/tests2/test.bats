@@ -1,6 +1,6 @@
 setup() {
   if ! command -v bc &> /dev/null; then
-    sudo apt install bc
+    sudo apt-get update && sudo apt-get install -y bc
   fi
 }
 

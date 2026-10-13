@@ -6,6 +6,14 @@ parameters:
     description: "REQUIRED: Path containing BATS test script(s)"
     type: string
 
+  version:
+    description:
+      'Version of BATS-Core to install: a release tag (e.g. "v1.14.0") or a full commit SHA
+      from the bats-core repository. The default of "latest" installs the tip of the default branch.
+      Ignored if BATS is already installed in the environment.'
+    type: string
+    default: "latest"
+
   formatter:
     description: "Formatter to use for output seen in the step UI. You can also supply a custom formatter."
     type: string
@@ -54,7 +62,8 @@ executor: <<parameters.exec_environment>>
 
 steps:
   - checkout
-  - install
+  - install:
+      version: <<parameters.version>>
   - steps: <<parameters.setup-steps>>
   - run:
       name: Execute BATS tests
